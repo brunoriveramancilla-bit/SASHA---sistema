@@ -43,9 +43,11 @@ function volverMenu() {
 // BUSCAR CLIENTES
 // =====================================================
 
-document
-    .getElementById("buscarCliente")
-    .addEventListener("input", buscarClientes);
+const inputCliente = document.getElementById("buscarCliente");
+
+if (inputCliente) {
+    inputCliente.addEventListener("input", buscarClientes);
+}
 
 
 async function buscarClientes() {
@@ -108,9 +110,11 @@ function seleccionarCliente(cliente) {
 // BUSCAR PRODUCTOS
 // =====================================================
 
-document
-    .getElementById("buscarProducto")
-    .addEventListener("input", buscarProductos);
+const inputProducto = document.getElementById("buscarProducto");
+
+if (inputProducto) {
+    inputProducto.addEventListener("input", buscarProductos);
+}
 
 
 async function buscarProductos() {
