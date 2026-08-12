@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SASHA - Consulta de Producto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>SASHA</h1>
+        <h2>Consulta de producto</h2>
+        <input
+            type="text"
+            id="codigo"
+            placeholder="Escanee código de barras"
+            autofocus
+        >
+        <button onclick="buscarProducto()">Buscar</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
