@@ -3,22 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SASHA - Consulta de Producto</title>
+    <title>SASHA</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="contenedor">
+
+    <header>
         <h1>SASHA</h1>
-        <h2>Consulta de producto</h2>
-        <input
-            type="text"
-            id="codigo"
-            placeholder="Escanee código de barras"
-            autofocus
-        >
-        <button onclick="buscarProducto()">Buscar</button>
-        <div id="resultado"></div>
-    </div>
+        <p>Sistema de gestión</p>
+    </header>
+
+    <main class="contenedor">
+
+        <!-- MENU PRINCIPAL -->
+        <section id="menuPrincipal" class="panel">
+
+            <h2>Menú principal</h2>
+
+            <div class="menu-botones">
+
+                <button onclick="mostrarSeccion('crearPedido')">
+                    Crear Pedido Cliente
+                </button>
+
+                <button onclick="mostrarSeccion('statusPedido')">
+                    Status Pedido Cliente
+                </button>
+
+                <button onclick="mostrarSeccion('stockDisponible')">
+                    Revisar Stock Disponible
+                </button>
+
+                <button onclick="mostrarSeccion('pedidoSasha')">
+                    Generar Pedido SASHA
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- CREAR PEDIDO CLIENTE -->
+        <section id="crearPedido" class="panel oculto">
+
+            <button class="volver" onclick="volverMenu()">
+                ← Volver
+            </button>
+
+            <h2>Crear Pedido Cliente</h2>
+
+
+            <!-- CLIENTE -->
+            <div class="bloque">
+
+                <label>Cliente</label>
+
+                <input
+                    type="text"
+                    id="buscarCliente"
+                    placeholder="Buscar cliente..."
+                    autocomplete="off"
+                >
+
+                <div id="listaClientes" class="lista-resultados"></div>
+
+                <div id="clienteSeleccionado"></div>
+
+            </div>
+
+
+            <!-- PRODUCTO -->
+            <div class="bloque">
+
+                <label>Producto</label>
+
+                <input
+                    type="text"
+                    id="buscarProducto"
+                    placeholder="Buscar por producto o escanear código"
+                    autocomplete="off"
+                >
+
+                <div id="listaProductos" class="lista-resultados"></div>
+
+                <div id="productoSeleccionado"></div>
+
+            </div>
+
+
+            <!-- INFORMACION PRODUCTO -->
+            <div id="infoProducto" class="producto-info oculto">
+
+                <h3 id="nombreProducto"></h3>
+
+                <p>
+                    Talla:
+                    <strong id="tallaProducto"></strong>
+                </p>
+
+                <p>
+                    Color:
+                    <strong id="colorProducto"></strong>
+                </p>
+
+                <p>
+                    Precio:
+                    <strong id="precioProducto"></strong>
+                </p>
+
+                <p>
+                    Stock disponible:
+                    <strong id="stockProducto"></strong>
+                </p>
+
+                <label>Cantidad</label>
+
+                <input
+                    type="number"
+                    id="cantidadProducto"
+                    value="1"
+                    min="1"
+                >
+
+                <button onclick="agregarProductoPedido()">
+                    Agregar al pedido
+                </button>
+
+            </div>
+
+
+            <!-- CARRITO / PEDIDO -->
+            <div class="bloque">
+
+                <h3>Pedido</h3>
+
+                <table id="tablaPedido">
+
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cant.</th>
+                            <th>Stock</th>
+                            <th>Por pedir</th>
+                            <th>Precio</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+
+                </table>
+
+                <div class="total">
+                    Total:
+                    <strong id="totalPedido">$0</strong>
+                </div>
+
+                <button
+                    class="guardar"
+                    onclick="guardarPedido()"
+                >
+                    Guardar Pedido
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATUS PEDIDO -->
+        <section id="statusPedido" class="panel oculto">
+
+            <button class="volver" onclick="volverMenu()">← Volver</button>
+
+            <h2>Status Pedido Cliente</h2>
+
+            <p>Esta sección la construiremos después.</p>
+
+        </section>
+
+
+        <!-- STOCK -->
+        <section id="stockDisponible" class="panel oculto">
+
+            <button class="volver" onclick="volverMenu()">← Volver</button>
+
+            <h2>Revisar Stock Disponible</h2>
+
+            <p>Esta sección la construiremos después.</p>
+
+        </section>
+
+
+        <!-- PEDIDO SASHA -->
+        <section id="pedidoSasha" class="panel oculto">
+
+            <button class="volver" onclick="volverMenu()">← Volver</button>
+
+            <h2>Generar Pedido SASHA</h2>
+
+            <p>Esta sección la construiremos después.</p>
+
+        </section>
+
+    </main>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>
