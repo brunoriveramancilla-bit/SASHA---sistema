@@ -4,152 +4,446 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SASHA</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background: #fff7fa;
+            color: #3d2630;
+        }
+        /* =====================================================
+           ENCABEZADO
+        ===================================================== */
+        .encabezado {
+            background: white;
+            min-height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 35px;
+            border-bottom: 3px solid #d85185;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .logo-temporal {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: #d85185;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+        }
+        .encabezado h1 {
+            margin: 0;
+            color: #c63f73;
+            font-size: 27px;
+            letter-spacing: 1px;
+        }
+        .encabezado p {
+            margin: 3px 0 0;
+            color: #8a6875;
+            font-size: 14px;
+        }
+        .usuario {
+            color: #8a6875;
+            font-size: 14px;
+        }
+        /* =====================================================
+           CONTENEDOR
+        ===================================================== */
+        .contenedor {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+        /* =====================================================
+           PANELES
+        ===================================================== */
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(88, 48, 65, 0.08);
+        }
+        .panel h2 {
+            margin-top: 0;
+            color: #5d3444;
+        }
+        .oculto {
+            display: none;
+        }
+        /* =====================================================
+           MENU PRINCIPAL
+        ===================================================== */
+        .menu-botones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 25px;
+        }
+        .menu-botones button {
+            min-height: 115px;
+            background: #fff;
+            border: 1px solid #efd1dc;
+            color: #5d3444;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: bold;
+            padding: 22px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        .menu-botones button:hover {
+            background: #fceaf1;
+            border-color: #d85185;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+        /* =====================================================
+           BOTONES GENERALES
+        ===================================================== */
+        button {
+            font-family: inherit;
+        }
+        .volver {
+            margin-bottom: 22px;
+            padding: 10px 16px;
+            background: #f6e2ea;
+            color: #8c3155;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .volver:hover {
+            background: #efcbd9;
+        }
+        .guardar {
+            margin-top: 25px;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #c83f73;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .guardar:hover {
+            background: #ad315f;
+        }
+        /* =====================================================
+           BLOQUES
+        ===================================================== */
+        .bloque {
+            margin-top: 28px;
+            padding: 20px;
+            background: #fffafb;
+            border: 1px solid #f0dbe3;
+            border-radius: 12px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5d3444;
+        }
+        /* =====================================================
+           TIPO DE VENTA
+        ===================================================== */
+        .tipo-venta-opciones {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .opcion-radio {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            margin-bottom: 0;
+            color: #5d3444;
+            cursor: pointer;
+        }
+        .opcion-radio input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            padding: 0;
+        }
+        /* =====================================================
+           INPUTS
+        ===================================================== */
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            font-size: 16px;
+            border: 1px solid #d8c2cb;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+        }
+        input:focus {
+            border-color: #d85185;
+            box-shadow: 0 0 0 3px rgba(216, 81, 133, 0.12);
+        }
+        /* =====================================================
+           BUSQUEDA
+        ===================================================== */
+        .lista-resultados {
+            border: 1px solid #ead1db;
+            border-top: none;
+            max-height: 220px;
+            overflow-y: auto;
+            display: none;
+            background: white;
+            border-radius: 0 0 8px 8px;
+        }
+        .item-resultado {
+            padding: 11px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3e5ea;
+        }
+        .item-resultado:last-child {
+            border-bottom: none;
+        }
+        .item-resultado:hover {
+            background: #fceaf1;
+        }
+        /* =====================================================
+           PRODUCTO SELECCIONADO
+        ===================================================== */
+        .producto-info {
+            margin-top: 22px;
+            padding: 22px;
+            background: #fff5f8;
+            border-left: 5px solid #d85185;
+            border-radius: 10px;
+        }
+        .producto-info h3 {
+            margin-top: 0;
+            color: #a63260;
+        }
+        .producto-info button {
+            margin-top: 12px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #d85185;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .producto-info button:hover {
+            background: #bd3f70;
+        }
+        /* =====================================================
+           PRECIOS PRODUCTO (mayorista / publico)
+        ===================================================== */
+        .precio-linea {
+            color: #8a6875;
+            transition: 0.15s;
+        }
+        .precio-linea.precio-activo {
+            color: #a63260;
+            font-size: 18px;
+        }
+        .precio-linea.precio-activo strong {
+            color: #d85185;
+        }
+        /* =====================================================
+           TABLA PEDIDO
+        ===================================================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        th {
+            background: #f9e5ed;
+            color: #6b3a4c;
+            font-size: 14px;
+        }
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eddde3;
+            text-align: left;
+        }
+        tbody tr:hover {
+            background: #fff8fa;
+        }
+        td button {
+            border: none;
+            background: #f2d4df;
+            color: #9d335a;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 7px 10px;
+        }
+        /* =====================================================
+           TOTAL
+        ===================================================== */
+        .total {
+            margin-top: 22px;
+            text-align: right;
+            font-size: 21px;
+            color: #5d3444;
+        }
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+        @media (max-width: 700px) {
+            .encabezado {
+                padding: 14px 18px;
+            }
+            .usuario {
+                display: none;
+            }
+            .menu-botones {
+                grid-template-columns: 1fr;
+            }
+            .panel {
+                padding: 20px;
+            }
+            .contenedor {
+                margin-top: 20px;
+            }
+            table {
+                font-size: 13px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
     <header class="encabezado">
         <div class="marca">
             <div class="logo-temporal">S</div>
-    
+
             <div>
                 <h1>SASHA</h1>
                 <p>Sistema de Gestión</p>
             </div>
         </div>
-    
+
         <div class="usuario">
             Distribuidora Sasha
         </div>
     </header>
-
     <main class="contenedor">
-
         <!-- MENU PRINCIPAL -->
         <section id="menuPrincipal" class="panel">
-
             <h2>Menú principal</h2>
-
             <div class="menu-botones">
-
                 <button onclick="mostrarSeccion('crearPedido')">
                     Crear Pedido Cliente
                 </button>
-
                 <button onclick="mostrarSeccion('statusPedido')">
                     Status Pedido Cliente
                 </button>
-
                 <button onclick="mostrarSeccion('stockDisponible')">
                     Revisar Stock Disponible
                 </button>
-
                 <button onclick="mostrarSeccion('pedidoSasha')">
                     Generar Pedido SASHA
                 </button>
-
             </div>
-
         </section>
-
-
         <!-- CREAR PEDIDO CLIENTE -->
         <section id="crearPedido" class="panel oculto">
-
             <button class="volver" onclick="volverMenu()">
                 ← Volver
             </button>
-
             <h2>Crear Pedido Cliente</h2>
-
-
+            <!-- TIPO DE VENTA -->
+            <div class="bloque">
+                <label>Tipo de venta</label>
+                <div class="tipo-venta-opciones">
+                    <label class="opcion-radio">
+                        <input type="radio" name="tipoVenta" value="mayorista">
+                        Mayorista
+                    </label>
+                    <label class="opcion-radio">
+                        <input type="radio" name="tipoVenta" value="publico">
+                        Público general
+                    </label>
+                </div>
+            </div>
             <!-- CLIENTE -->
             <div class="bloque">
-
                 <label>Cliente</label>
-
                 <input
                     type="text"
                     id="buscarCliente"
                     placeholder="Buscar cliente..."
                     autocomplete="off"
                 >
-
                 <div id="listaClientes" class="lista-resultados"></div>
-
                 <div id="clienteSeleccionado"></div>
-
             </div>
-
-
             <!-- PRODUCTO -->
             <div class="bloque">
-
                 <label>Producto</label>
-
                 <input
                     type="text"
                     id="buscarProducto"
                     placeholder="Buscar por producto o escanear código"
                     autocomplete="off"
                 >
-
                 <div id="listaProductos" class="lista-resultados"></div>
-
                 <div id="productoSeleccionado"></div>
-
             </div>
-
-
             <!-- INFORMACION PRODUCTO -->
             <div id="infoProducto" class="producto-info oculto">
-
                 <h3 id="nombreProducto"></h3>
-
                 <p>
                     Talla:
                     <strong id="tallaProducto"></strong>
                 </p>
-
                 <p>
                     Color:
                     <strong id="colorProducto"></strong>
                 </p>
-
-                <p>
-                    Precio:
-                    <strong id="precioProducto"></strong>
+                <p class="precio-linea">
+                    Precio mayorista:
+                    <strong id="precioMayoristaProducto"></strong>
                 </p>
-
+                <p class="precio-linea">
+                    Precio público:
+                    <strong id="precioPublicoProducto"></strong>
+                </p>
                 <p>
                     Stock disponible:
                     <strong id="stockProducto"></strong>
                 </p>
-
                 <label>Cantidad</label>
-
                 <input
                     type="number"
                     id="cantidadProducto"
                     value="1"
                     min="1"
                 >
-
                 <button onclick="agregarProductoPedido()">
                     Agregar al pedido
                 </button>
-
             </div>
-
-
             <!-- CARRITO / PEDIDO -->
             <div class="bloque">
-
                 <h3>Pedido</h3>
-
                 <table id="tablaPedido">
-
                     <thead>
                         <tr>
                             <th>Producto</th>
@@ -160,68 +454,342 @@
                             <th></th>
                         </tr>
                     </thead>
-
                     <tbody></tbody>
-
                 </table>
-
                 <div class="total">
                     Total:
                     <strong id="totalPedido">$0</strong>
                 </div>
-
                 <button
                     class="guardar"
                     onclick="guardarPedido()"
                 >
                     Guardar Pedido
                 </button>
-
             </div>
-
         </section>
-
-
         <!-- STATUS PEDIDO -->
         <section id="statusPedido" class="panel oculto">
-
             <button class="volver" onclick="volverMenu()">← Volver</button>
-
             <h2>Status Pedido Cliente</h2>
-
             <p>Esta sección la construiremos después.</p>
-
         </section>
-
-
         <!-- STOCK -->
         <section id="stockDisponible" class="panel oculto">
-
             <button class="volver" onclick="volverMenu()">← Volver</button>
-
             <h2>Revisar Stock Disponible</h2>
-
             <p>Esta sección la construiremos después.</p>
-
         </section>
-
-
         <!-- PEDIDO SASHA -->
         <section id="pedidoSasha" class="panel oculto">
-
             <button class="volver" onclick="volverMenu()">← Volver</button>
-
             <h2>Generar Pedido SASHA</h2>
-
             <p>Esta sección la construiremos después.</p>
-
         </section>
-
     </main>
-
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="app.js?v=2"></script>
+    <script>
+        const SUPABASE_URL = "https://vhjdwyrpecoscgpirhcc.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_m5a12648_BCUTj8tnPdtfQ_bOjLlbgE";
+        const supabaseClient = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+        let clienteActual = null;
+        let productoActual = null;
+        let pedidoActual = [];
 
+        // =====================================================
+        // NAVEGACION
+        // =====================================================
+        function mostrarSeccion(id) {
+            document
+                .querySelectorAll(".panel")
+                .forEach(panel => panel.classList.add("oculto"));
+            document
+                .getElementById(id)
+                .classList.remove("oculto");
+        }
+        function volverMenu() {
+            document
+                .querySelectorAll(".panel")
+                .forEach(panel => panel.classList.add("oculto"));
+            document
+                .getElementById("menuPrincipal")
+                .classList.remove("oculto");
+        }
+
+        // =====================================================
+        // TIPO DE VENTA (mayorista / publico)
+        // La trabajadora elige esto en cada pedido, no depende del cliente.
+        // =====================================================
+        function obtenerTipoVenta() {
+            const seleccionado = document.querySelector(
+                'input[name="tipoVenta"]:checked'
+            );
+            return seleccionado ? seleccionado.value : null;
+        }
+        function precioSegunTipoVenta(producto, tipoVenta) {
+            if (tipoVenta === "mayorista") {
+                return producto.precio_mayorista;
+            }
+            if (tipoVenta === "publico") {
+                return producto.precio_publico;
+            }
+            return null;
+        }
+        document.querySelectorAll('input[name="tipoVenta"]').forEach(radio => {
+            radio.addEventListener("change", () => {
+                const tipoVenta = obtenerTipoVenta();
+                // Si ya hay productos en el carrito, se recalcula el precio de cada uno
+                pedidoActual.forEach(item => {
+                    item.precioUnitario = precioSegunTipoVenta(
+                        item.producto,
+                        tipoVenta
+                    );
+                });
+                actualizarPedido();
+                // Si hay un producto en pantalla esperando ser agregado, se actualiza su precio mostrado
+                if (productoActual) {
+                    mostrarPrecioProducto(productoActual);
+                }
+            });
+        });
+
+        // =====================================================
+        // BUSCAR CLIENTES
+        // =====================================================
+        const inputCliente = document.getElementById("buscarCliente");
+        if (inputCliente) {
+            inputCliente.addEventListener("input", buscarClientes);
+        }
+        async function buscarClientes() {
+            const texto = document
+                .getElementById("buscarCliente")
+                .value
+                .trim();
+            const lista = document.getElementById("listaClientes");
+            if (texto.length < 1) {
+                lista.style.display = "none";
+                return;
+            }
+            const { data, error } = await supabaseClient
+                .from("clientes")
+                .select("*")
+                .ilike("nombre", `%${texto}%`)
+                .limit(10);
+            if (error) {
+                console.error(error);
+                return;
+            }
+            lista.innerHTML = "";
+            data.forEach(cliente => {
+                const div = document.createElement("div");
+                div.className = "item-resultado";
+                div.innerText = cliente.nombre;
+                div.onclick = () => seleccionarCliente(cliente);
+                lista.appendChild(div);
+            });
+            lista.style.display = "block";
+        }
+        function seleccionarCliente(cliente) {
+            clienteActual = cliente;
+            document.getElementById("buscarCliente").value = cliente.nombre;
+            document.getElementById("clienteSeleccionado").innerHTML =
+                `<strong>Cliente seleccionado:</strong> ${cliente.nombre}`;
+            document.getElementById("listaClientes").style.display = "none";
+        }
+
+        // =====================================================
+        // BUSCAR PRODUCTOS
+        // =====================================================
+        const inputProducto = document.getElementById("buscarProducto");
+        if (inputProducto) {
+            inputProducto.addEventListener("input", buscarProductos);
+        }
+        async function buscarProductos() {
+            const texto = document
+                .getElementById("buscarProducto")
+                .value
+                .trim();
+            const lista = document.getElementById("listaProductos");
+            if (texto.length < 1) {
+                lista.style.display = "none";
+                return;
+            }
+            // id_producto es el codigo de barras del producto (la columna codigo_barra
+            // ya no existe, ahora id_producto cumple ese rol). Se busca por descripcion
+            // o directamente por ese codigo/id.
+            const { data, error } = await supabaseClient
+                .from("productos")
+                .select("*")
+                .or(
+                    `descripcion.ilike.%${texto}%,id_producto.ilike.%${texto}%`
+                )
+                .limit(15);
+            if (error) {
+                console.error(error);
+                return;
+            }
+            lista.innerHTML = "";
+            data.forEach(producto => {
+                const div = document.createElement("div");
+                div.className = "item-resultado";
+                div.innerText =
+                    `${producto.descripcion} - ${producto.talla} - ${producto.color}`;
+                div.onclick = () => seleccionarProducto(producto);
+                lista.appendChild(div);
+            });
+            lista.style.display = "block";
+        }
+
+        // =====================================================
+        // SELECCION PRODUCTO
+        // =====================================================
+        async function seleccionarProducto(producto) {
+            const { data, error } = await supabaseClient.rpc(
+                "buscar_producto_por_codigo",
+                {
+                    codigo: producto.id_producto
+                }
+            );
+            if (error || !data || data.length === 0) {
+                console.error(error);
+                return;
+            }
+            productoActual = data[0];
+            document.getElementById("nombreProducto").innerText =
+                productoActual.descripcion;
+            document.getElementById("tallaProducto").innerText =
+                productoActual.talla || "-";
+            document.getElementById("colorProducto").innerText =
+                productoActual.color || "-";
+            document.getElementById("stockProducto").innerText =
+                productoActual.stock;
+            mostrarPrecioProducto(productoActual);
+            document
+                .getElementById("infoProducto")
+                .classList.remove("oculto");
+            document.getElementById("listaProductos").style.display = "none";
+        }
+
+        function mostrarPrecioProducto(producto) {
+            const tipoVenta = obtenerTipoVenta();
+            const precioMayoristaEl = document.getElementById("precioMayoristaProducto");
+            const precioPublicoEl = document.getElementById("precioPublicoProducto");
+            precioMayoristaEl.innerText =
+                "$" + Number(producto.precio_mayorista).toLocaleString("es-CL");
+            precioPublicoEl.innerText =
+                "$" + Number(producto.precio_publico).toLocaleString("es-CL");
+            precioMayoristaEl.parentElement.classList.toggle(
+                "precio-activo",
+                tipoVenta === "mayorista"
+            );
+            precioPublicoEl.parentElement.classList.toggle(
+                "precio-activo",
+                tipoVenta === "publico"
+            );
+        }
+
+        // =====================================================
+        // AGREGAR AL PEDIDO
+        // =====================================================
+        function agregarProductoPedido() {
+            if (!productoActual) return;
+            const tipoVenta = obtenerTipoVenta();
+            if (!tipoVenta) {
+                alert(
+                    "Selecciona el tipo de venta (mayorista o público general) antes de agregar productos."
+                );
+                return;
+            }
+            const cantidad = parseInt(
+                document.getElementById("cantidadProducto").value
+            );
+            const stock = Number(productoActual.stock);
+            const cantidadStock = Math.min(cantidad, stock);
+            const cantidadPedir = Math.max(cantidad - stock, 0);
+            const precioUnitario = precioSegunTipoVenta(productoActual, tipoVenta);
+            pedidoActual.push({
+                producto: productoActual,
+                cantidad: cantidad,
+                stock: cantidadStock,
+                pedir: cantidadPedir,
+                precioUnitario: precioUnitario
+            });
+            productoActual = null;
+            document.getElementById("buscarProducto").value = "";
+            document.getElementById("cantidadProducto").value = 1;
+            document
+                .getElementById("infoProducto")
+                .classList.add("oculto");
+            actualizarPedido();
+        }
+
+        // =====================================================
+        // ACTUALIZAR CARRITO
+        // =====================================================
+        function actualizarPedido() {
+            const tbody = document.querySelector(
+                "#tablaPedido tbody"
+            );
+            tbody.innerHTML = "";
+            let total = 0;
+            pedidoActual.forEach((item, index) => {
+                const subtotal = item.precioUnitario * item.cantidad;
+                total += subtotal;
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>
+                        ${item.producto.descripcion}
+                        <br>
+                        <small>
+                            ${item.producto.talla || ""}
+                            ${item.producto.color || ""}
+                        </small>
+                    </td>
+                    <td>${item.cantidad}</td>
+                    <td>${item.stock}</td>
+                    <td>${item.pedir}</td>
+                    <td>
+                        $${subtotal.toLocaleString("es-CL")}
+                    </td>
+                    <td>
+                        <button onclick="eliminarProducto(${index})">
+                            X
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+            document.getElementById("totalPedido").innerText =
+                "$" + total.toLocaleString("es-CL");
+        }
+        function eliminarProducto(index) {
+            pedidoActual.splice(index, 1);
+            actualizarPedido();
+        }
+
+        // =====================================================
+        // GUARDAR PEDIDO
+        // =====================================================
+        function guardarPedido() {
+            if (!clienteActual) {
+                alert("Debe seleccionar un cliente.");
+                return;
+            }
+            if (!obtenerTipoVenta()) {
+                alert("Debe seleccionar el tipo de venta (mayorista o público general).");
+                return;
+            }
+            if (pedidoActual.length === 0) {
+                alert("Debe agregar productos.");
+                return;
+            }
+            alert(
+                "Pedido preparado correctamente. En el siguiente paso lo guardaremos en Supabase."
+            );
+        }
+    </script>
 </body>
 </html>
