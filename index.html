@@ -145,6 +145,10 @@
         .guardar:hover {
             background: #ad315f;
         }
+        .guardar:disabled {
+            background: #e3b7c7;
+            cursor: not-allowed;
+        }
         /* =====================================================
            BLOQUES
         ===================================================== */
@@ -462,9 +466,10 @@
                 </div>
                 <button
                     class="guardar"
+                    id="botonGuardarPedido"
                     onclick="guardarPedido()"
                 >
-                    Guardar Pedido
+                    Finalizar Compra
                 </button>
             </div>
         </section>
@@ -771,14 +776,20 @@
         }
 
         // =====================================================
-        // GUARDAR PEDIDO
+        // CONFIRMAR (separa automáticamente venta + pedido)
         // =====================================================
-        function guardarPedido() {
+        // Lo que ya está físico en tienda se vende y se cobra ahora mismo
+        // (tabla ventas/detalle_venta, descuenta stock de inmediato). Lo que
+        // no está se registra como pedido pendiente al proveedor (tabla
+        // pedidos_clientes/detalle_pedido_cliente, se paga cuando llegue).
+        // Un mismo carrito puede generar una, la otra, o ambas cosas.
+        async function guardarPedido() {
             if (!clienteActual) {
                 alert("Debe seleccionar un cliente.");
                 return;
             }
-            if (!obtenerTipoVenta()) {
+            const tipoVenta = obtenerTipoVenta();
+            if (!tipoVenta) {
                 alert("Debe seleccionar el tipo de venta (mayorista o público general).");
                 return;
             }
@@ -786,9 +797,163 @@
                 alert("Debe agregar productos.");
                 return;
             }
-            alert(
-                "Pedido preparado correctamente. En el siguiente paso lo guardaremos en Supabase."
-            );
+
+            const itemsVenta = pedidoActual.filter(item => item.stock > 0);
+            const itemsPedido = pedidoActual.filter(item => item.pedir > 0);
+
+            const botonGuardar = document.getElementById("botonGuardarPedido");
+            botonGuardar.disabled = true;
+            botonGuardar.innerText = "Guardando...";
+
+            try {
+                let totalVenta = 0;
+                let totalPedido = 0;
+
+                // -------- VENTA (lo que hay físico, se cobra ahora) --------
+                if (itemsVenta.length > 0) {
+                    totalVenta = itemsVenta.reduce(
+                        (suma, item) => suma + item.precioUnitario * item.stock,
+                        0
+                    );
+
+                    const { data: ventaCreada, error: errorVenta } = await supabaseClient
+                        .from("ventas")
+                        .insert({
+                            id_cliente: clienteActual.id_cliente,
+                            fecha: new Date().toISOString(),
+                            total: totalVenta,
+                            estado: "pagada"
+                        })
+                        .select()
+                        .single();
+
+                    if (errorVenta) {
+                        console.error(errorVenta);
+                        alert("Ocurrió un error al registrar la venta. Revisa la consola (F12).");
+                        return;
+                    }
+
+                    const idVenta = ventaCreada.id_venta;
+
+                    const detallesVenta = itemsVenta.map(item => ({
+                        id_venta: idVenta,
+                        id_producto: item.producto.id_producto,
+                        cantidad: item.stock,
+                        precio: item.precioUnitario
+                    }));
+
+                    const { error: errorDetalleVenta } = await supabaseClient
+                        .from("detalle_venta")
+                        .insert(detallesVenta);
+
+                    if (errorDetalleVenta) {
+                        console.error(errorDetalleVenta);
+                        alert(
+                            "La venta se creó pero hubo un error al guardar su detalle. Revisa la consola (F12)."
+                        );
+                        return;
+                    }
+
+                    // Se descuenta el inventario de inmediato: la clienta se
+                    // lleva estos productos en el momento.
+                    const movimientos = itemsVenta.map(item => ({
+                        id_producto: item.producto.id_producto,
+                        fecha: new Date().toISOString(),
+                        tipo_movimiento: "venta",
+                        cantidad: item.stock,
+                        signo: "-",
+                        observacion: `Venta ${idVenta}`
+                    }));
+
+                    const { error: errorMovimiento } = await supabaseClient
+                        .from("movimientos_inventario")
+                        .insert(movimientos);
+
+                    if (errorMovimiento) {
+                        console.error(errorMovimiento);
+                        alert(
+                            "La venta se guardó pero hubo un error al descontar el stock. Revisa la consola (F12)."
+                        );
+                        return;
+                    }
+                }
+
+                // -------- PEDIDO (lo que falta, se paga cuando llegue) --------
+                if (itemsPedido.length > 0) {
+                    totalPedido = itemsPedido.reduce(
+                        (suma, item) => suma + item.precioUnitario * item.pedir,
+                        0
+                    );
+
+                    const { data: pedidoCreado, error: errorPedido } = await supabaseClient
+                        .from("pedidos_clientes")
+                        .insert({
+                            id_cliente: clienteActual.id_cliente,
+                            fecha: new Date().toISOString(),
+                            estado: "pendiente"
+                        })
+                        .select()
+                        .single();
+
+                    if (errorPedido) {
+                        console.error(errorPedido);
+                        alert("Ocurrió un error al registrar el pedido. Revisa la consola (F12).");
+                        return;
+                    }
+
+                    const idPedido = pedidoCreado.id_pedido;
+
+                    const detallesPedido = itemsPedido.map(item => ({
+                        id_pedido: idPedido,
+                        id_producto: item.producto.id_producto,
+                        cantidad: item.pedir,
+                        precio: item.precioUnitario,
+                        estado: "pendiente"
+                    }));
+
+                    const { error: errorDetallePedido } = await supabaseClient
+                        .from("detalle_pedido_cliente")
+                        .insert(detallesPedido);
+
+                    if (errorDetallePedido) {
+                        console.error(errorDetallePedido);
+                        alert(
+                            "El pedido se creó pero hubo un error al guardar su detalle. Revisa la consola (F12)."
+                        );
+                        return;
+                    }
+                }
+
+                // -------- RESUMEN --------
+                let mensaje = "";
+                if (totalVenta > 0) {
+                    mensaje += `Venta registrada: $${totalVenta.toLocaleString("es-CL")}.\n`;
+                }
+                if (totalPedido > 0) {
+                    mensaje += `Pedido registrado (pendiente del proveedor): $${totalPedido.toLocaleString("es-CL")}.`;
+                }
+                alert(mensaje.trim());
+                reiniciarFormularioPedido();
+            } finally {
+                botonGuardar.disabled = false;
+                botonGuardar.innerText = "Finalizar Compra";
+            }
+        }
+
+        function reiniciarFormularioPedido() {
+            clienteActual = null;
+            productoActual = null;
+            pedidoActual = [];
+            document.getElementById("buscarCliente").value = "";
+            document.getElementById("clienteSeleccionado").innerHTML = "";
+            document.getElementById("buscarProducto").value = "";
+            document
+                .getElementById("infoProducto")
+                .classList.add("oculto");
+            document.querySelectorAll('input[name="tipoVenta"]').forEach(radio => {
+                radio.checked = false;
+            });
+            actualizarPedido();
         }
     </script>
 </body>
