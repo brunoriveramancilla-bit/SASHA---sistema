@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SASHA</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+        /* =====================================================
+           ENCABEZADO
+        ===================================================== */
+        .encabezado {
+            background: white;
+            min-height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 35px;
+            border-bottom: 2px solid #0052cc;
+            box-shadow: 0 2px 6px rgba(0,82,204,0.08);
+        }
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .logo-temporal {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            background: white;
+            padding: 5px;
+        }
+        .logo-temporal img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .encabezado h1 {
+            margin: 0;
+            color: #0052cc;
+            font-size: 27px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        .encabezado p {
+            margin: 3px 0 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+        .usuario {
+            color: #64748b;
+            font-size: 14px;
+        }
+        /* =====================================================
+           CONTENEDOR
+        ===================================================== */
+        .contenedor {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+        /* =====================================================
+           PANELES
+        ===================================================== */
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid #0052cc;
+        }
+        .panel h2 {
+            margin-top: 0;
+            color: #0052cc;
+        }
+        .oculto {
+            display: none;
+        }
+        /* =====================================================
+           MENU PRINCIPAL
+        ===================================================== */
+        .menu-botones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 25px;
+        }
+        .menu-botones button {
+            min-height: 115px;
+            background: white;
+            border: 1px solid #d1d5db;
+            color: #1e293b;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: bold;
+            padding: 22px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        .menu-botones button:hover {
+            background: #e8f0ff;
+            border-color: #0052cc;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,82,204,0.12);
+        }
+        /* =====================================================
+           BOTONES GENERALES
+        ===================================================== */
+        button {
+            font-family: inherit;
+        }
+        .volver {
+            margin-bottom: 22px;
+            padding: 10px 16px;
+            background: #e8f0ff;
+            color: #0052cc;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .volver:hover {
+            background: #d1e0ff;
+        }
+        .guardar {
+            margin-top: 25px;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #0052cc;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .guardar:hover {
+            background: #0042aa;
+        }
+        .guardar:disabled {
+            background: #b0c4ff;
+            cursor: not-allowed;
+        }
+        /* =====================================================
+           BLOQUES
+        ===================================================== */
+        .bloque {
+            margin-top: 28px;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        /* =====================================================
+           TIPO DE VENTA
+        ===================================================== */
+        .tipo-venta-opciones {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .opcion-radio {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            margin-bottom: 0;
+            color: #4a3640;
+            cursor: pointer;
+        }
+        .opcion-radio input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            accent-color: #0052cc;
+        }
+        /* =====================================================
+           INPUTS
+        ===================================================== */
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            font-size: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+            color: #2c3e50;
+        }
+        input:focus {
+            border-color: #0052cc;
+            box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+        }
+        select {
+            width: 100%;
+            padding: 13px 14px;
+            font-size: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+            color: #2c3e50;
+        }
+        select:focus {
+            border-color: #0052cc;
+            box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+        }
+        /* =====================================================
+           BUSQUEDA
+        ===================================================== */
+        .lista-resultados {
+            border: 1px solid #d1d5db;
+            border-top: none;
+            max-height: 220px;
+            overflow-y: auto;
+            display: none;
+            background: white;
+            border-radius: 0 0 8px 8px;
+        }
+        .item-resultado {
+            padding: 11px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #e8f0ff;
+            color: #2c3e50;
+        }
+        .item-resultado:last-child {
+            border-bottom: none;
+        }
+        .item-resultado:hover {
+            background: #f0f5ff;
+        }
+        /* =====================================================
+           PRODUCTO SELECCIONADO
+        ===================================================== */
+        .producto-info {
+            margin-top: 22px;
+            padding: 22px;
+            background: #e8f0ff;
+            border-left: 5px solid #0052cc;
+            border-radius: 10px;
+        }
+        .producto-info h3 {
+            margin-top: 0;
+            color: #0052cc;
+        }
+        .producto-info button {
+            margin-top: 12px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #0052cc;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .producto-info button:hover {
+            background: #0042aa;
+        }
+        /* =====================================================
+           PRECIOS PRODUCTO (mayorista / publico)
+        ===================================================== */
+        .precio-linea {
+            color: #64748b;
+            transition: 0.15s;
+        }
+        .precio-linea.precio-activo {
+            color: #1e293b;
+            font-size: 18px;
+        }
+        .precio-linea.precio-activo strong {
+            color: #0052cc;
+        }
+        /* =====================================================
+           TABLA PEDIDO
+        ===================================================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        th {
+            background: #e8f0ff;
+            color: #0052cc;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #d1d5db;
+            text-align: left;
+            color: #2c3e50;
+        }
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        td button {
+            border: none;
+            background: #e8f0ff;
+            color: #0052cc;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 7px 10px;
+        }
+        /* =====================================================
+           TOTAL
+        ===================================================== */
+        .total {
+            margin-top: 22px;
+            text-align: right;
+            font-size: 21px;
+            color: #0052cc;
+        }
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+        @media (max-width: 700px) {
+            .encabezado {
+                padding: 14px 18px;
+            }
+            .usuario {
+                display: none;
+            }
+            .menu-botones {
+                grid-template-columns: 1fr;
+            }
+            .panel {
+                padding: 20px;
+            }
+            .contenedor {
+                margin-top: 20px;
+            }
+            table {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="encabezado">
+        <div class="marca">
+            <div class="logo-temporal">
+                <img src="data:image/jpeg;base64,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" alt="Logo SASHA">
+            </div>
+
+            <div>
+                <h1>SASHA</h1>
+                <p>Venta por Catálogos</p>
+            </div>
+        </div>
+
+        <div class="usuario">
+            Distribuidora Sasha
+        </div>
+    </header>
+    <main class="contenedor">
+        <!-- MENU PRINCIPAL -->
+        <section id="menuPrincipal" class="panel">
+            <h2>Menú principal</h2>
+            <div class="menu-botones">
+                <button onclick="mostrarSeccion('crearPedido')">
+                    Crear Pedido Cliente
+                </button>
+                <button onclick="mostrarSeccion('generarInventario')">
+                    Generar Inventario
+                </button>
+                <button onclick="mostrarSeccion('stockDisponible')">
+                    Revisar Stock Disponible
+                </button>
+                <button onclick="mostrarSeccion('auditoriaInventario')">
+                    Auditoría de Inventario
+                </button>
+            </div>
+        </section>
+        <!-- CREAR PEDIDO CLIENTE -->
+        <section id="crearPedido" class="panel oculto">
+            <button class="volver" onclick="volverMenu()">
+                ← Volver
+            </button>
+            <h2>Crear Pedido Cliente</h2>
+            <!-- TIPO DE VENTA -->
+            <div class="bloque">
+                <label>Tipo de venta</label>
+                <div class="tipo-venta-opciones">
+                    <label class="opcion-radio">
+                        <input type="radio" name="tipoVenta" value="mayorista">
+                        Mayorista
+                    </label>
+                    <label class="opcion-radio">
+                        <input type="radio" name="tipoVenta" value="publico">
+                        Público general
+                    </label>
+                </div>
+            </div>
+            <!-- CLIENTE -->
+            <div class="bloque">
+                <label>Cliente</label>
+                <input
+                    type="text"
+                    id="buscarCliente"
+                    placeholder="Buscar cliente..."
+                    autocomplete="off"
+                >
+                <div id="listaClientes" class="lista-resultados"></div>
+                <div id="clienteSeleccionado"></div>
+            </div>
+            <!-- PRODUCTO -->
+            <div class="bloque">
+                <label>Producto</label>
+                <input
+                    type="text"
+                    id="buscarProducto"
+                    placeholder="Buscar por producto o escanear código"
+                    autocomplete="off"
+                >
+                <div id="listaProductos" class="lista-resultados"></div>
+                <div id="productoSeleccionado"></div>
+            </div>
+            <!-- INFORMACION PRODUCTO -->
+            <div id="infoProducto" class="producto-info oculto">
+                <h3 id="nombreProducto"></h3>
+                <p>
+                    Talla:
+                    <strong id="tallaProducto"></strong>
+                </p>
+                <p>
+                    Color:
+                    <strong id="colorProducto"></strong>
+                </p>
+                <p class="precio-linea">
+                    Precio mayorista:
+                    <strong id="precioMayoristaProducto"></strong>
+                </p>
+                <p class="precio-linea">
+                    Precio público:
+                    <strong id="precioPublicoProducto"></strong>
+                </p>
+                <p>
+                    Stock disponible:
+                    <strong id="stockProducto"></strong>
+                </p>
+                <label>Cantidad</label>
+                <input
+                    type="number"
+                    id="cantidadProducto"
+                    value="1"
+                    min="1"
+                >
+                <button onclick="agregarProductoPedido()">
+                    Agregar al pedido
+                </button>
+            </div>
+            <!-- CARRITO / PEDIDO -->
+            <div class="bloque">
+                <h3>Pedido</h3>
+                <table id="tablaPedido">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cant.</th>
+                            <th>Stock</th>
+                            <th>Por pedir</th>
+                            <th>Precio</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="total">
+                    Total:
+                    <strong id="totalPedido">$0</strong>
+                </div>
+                <button
+                    class="guardar"
+                    id="botonGuardarPedido"
+                    onclick="guardarPedido()"
+                >
+                    Finalizar Compra
+                </button>
+            </div>
+        </section>
+        <!-- GENERAR INVENTARIO -->
+        <section id="generarInventario" class="panel oculto">
+            <button class="volver" onclick="volverMenu()">← Volver</button>
+            <h2>Generar Inventario</h2>
+
+            <div class="bloque">
+                <label>Buscar/Escanear Producto</label>
+                <input
+                    type="text"
+                    id="buscarProductoInventario"
+                    placeholder="Escanear código de barras o buscar..."
+                    autocomplete="off"
+                >
+                <div id="listaProductosInventario" class="lista-resultados"></div>
+            </div>
+
+            <div class="bloque">
+                <h3>Productos Escaneados</h3>
+                <table id="tablaInventarioActual">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaInventario"></tbody>
+                </table>
+            </div>
+
+            <div class="bloque" style="display: flex; gap: 15px;">
+                <button class="guardar" style="flex: 1; background: #0052cc; margin-top: 0;" onclick="guardarAuditoria()">
+                    Guardar Auditoría
+                </button>
+                <button class="guardar" style="flex: 1; background: #8a7a8a; margin-top: 0;" onclick="retomarAuditoria()">
+                    Retomar Auditoría
+                </button>
+                <button class="guardar" style="flex: 1; background: #4a7a5c; margin-top: 0;" onclick="finalizarAuditoria()">
+                    Finalizar Auditoría
+                </button>
+            </div>
+        </section>
+        <!-- STOCK -->
+        <section id="stockDisponible" class="panel oculto">
+            <button class="volver" onclick="volverMenu()">← Volver</button>
+            <h2>Revisar Stock Disponible</h2>
+            <div class="bloque">
+                <label>Código de Barra (ID Producto)</label>
+                <input
+                    type="text"
+                    id="filtroCodigoBarras"
+                    placeholder="Ej: 6959532325928"
+                    autocomplete="off"
+                >
+            </div>
+            <div class="bloque">
+                <label>Descripción</label>
+                <input
+                    type="text"
+                    id="filtroDescripcion"
+                    placeholder="Ej: HUEVO, LENCERIA..."
+                    autocomplete="off"
+                >
+            </div>
+            <div class="bloque">
+                <label>Referencia</label>
+                <input
+                    type="text"
+                    id="filtroReferencia"
+                    placeholder="Ej: REF-001..."
+                    autocomplete="off"
+                >
+            </div>
+            <table id="tablaStock">
+                <thead>
+                    <tr>
+                        <th>Código Barras</th>
+                        <th>Descripción</th>
+                        <th>Referencia</th>
+                        <th>Talla</th>
+                        <th>Color</th>
+                        <th>Stock</th>
+                        <th>Precio Base</th>
+                        <th>Precio Mayorista</th>
+                        <th>Precio Público</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTablaStock"></tbody>
+            </table>
+        </section>
+        <!-- AUDITORIA INVENTARIO -->
+        <section id="auditoriaInventario" class="panel oculto">
+            <button class="volver" onclick="volverMenu()">← Volver</button>
+            <h2>Auditoría de Inventario</h2>
+
+            <div class="bloque">
+                <label>Seleccionar Auditoría Finalizada</label>
+                <select id="selectAuditoria" onchange="cargarAuditoria()">
+                    <option value="">-- Cargando auditorías --</option>
+                </select>
+            </div>
+
+            <div id="resultadosAuditoria" class="oculto">
+                <div class="bloque">
+                    <h3 id="fechaAuditoria"></h3>
+                </div>
+
+                <table id="tablaAuditoria">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Referencia</th>
+                            <th>Descripción</th>
+                            <th>Stock Sistema</th>
+                            <th>Stock Físico</th>
+                            <th>Diferencia</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaAuditoria"></tbody>
+                </table>
+
+                <div style="margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="guardar" style="flex: 1; background: #0052cc; margin-top: 0; min-width: 150px;" onclick="descargarExcelAuditoria()">
+                        📥 Descargar Excel (.xlsx)
+                    </button>
+                    <button class="guardar" style="flex: 1; background: #0066ff; margin-top: 0; min-width: 150px;" onclick="descargarCSVAuditoria()">
+                        📊 Descargar CSV
+                    </button>
+                    <button class="guardar" style="flex: 1; background: #0042aa; margin-top: 0; min-width: 150px;" onclick="descargarPdfAuditoria()">
+                        📋 Descargar PDF
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js" onload="console.log('XLSX cargado exitosamente');" onerror="console.error('Error al cargar XLSX');"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" onload="console.log('jsPDF cargado exitosamente');" onerror="console.error('Error al cargar jsPDF');"></script>
+    <script>
+        // Verificar si XLSX se cargó
+        setTimeout(() => {
+            if (typeof XLSX === 'undefined') {
+                console.warn('XLSX no está disponible después de 2 segundos');
+            } else {
+                console.log('XLSX está disponible:', XLSX.version);
+            }
+            if (typeof jspdf === 'undefined') {
+                console.warn('jsPDF no está disponible después de 2 segundos');
+            } else {
+                console.log('jsPDF está disponible');
+            }
+        }, 2000);
+    </script>
+    <script>
+        const SUPABASE_URL = "https://vhjdwyrpecoscgpirhcc.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_m5a12648_BCUTj8tnPdtfQ_bOjLlbgE";
+        const supabaseClient = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+        let clienteActual = null;
+        let productoActual = null;
+        let pedidoActual = [];
+
+        // =====================================================
+        // NAVEGACION
+        // =====================================================
+        function mostrarSeccion(id) {
+            document
+                .querySelectorAll(".panel")
+                .forEach(panel => panel.classList.add("oculto"));
+            document
+                .getElementById(id)
+                .classList.remove("oculto");
+        }
+        function volverMenu() {
+            document
+                .querySelectorAll(".panel")
+                .forEach(panel => panel.classList.add("oculto"));
+            document
+                .getElementById("menuPrincipal")
+                .classList.remove("oculto");
+        }
+
+        // =====================================================
+        // TIPO DE VENTA (mayorista / publico)
+        // La trabajadora elige esto en cada pedido, no depende del cliente.
+        // =====================================================
+        function obtenerTipoVenta() {
+            const seleccionado = document.querySelector(
+                'input[name="tipoVenta"]:checked'
+            );
+            return seleccionado ? seleccionado.value : null;
+        }
+        function precioSegunTipoVenta(producto, tipoVenta) {
+            if (tipoVenta === "mayorista") {
+                return producto.precio_mayorista;
+            }
+            if (tipoVenta === "publico") {
+                return producto.precio_publico;
+            }
+            return null;
+        }
+        document.querySelectorAll('input[name="tipoVenta"]').forEach(radio => {
+            radio.addEventListener("change", () => {
+                const tipoVenta = obtenerTipoVenta();
+                // Si ya hay productos en el carrito, se recalcula el precio de cada uno
+                pedidoActual.forEach(item => {
+                    item.precioUnitario = precioSegunTipoVenta(
+                        item.producto,
+                        tipoVenta
+                    );
+                });
+                actualizarPedido();
+                // Si hay un producto en pantalla esperando ser agregado, se actualiza su precio mostrado
+                if (productoActual) {
+                    mostrarPrecioProducto(productoActual);
+                }
+            });
+        });
+
+        // =====================================================
+        // BUSCAR CLIENTES
+        // =====================================================
+        const inputCliente = document.getElementById("buscarCliente");
+        if (inputCliente) {
+            inputCliente.addEventListener("input", buscarClientes);
+        }
+        async function buscarClientes() {
+            const texto = document
+                .getElementById("buscarCliente")
+                .value
+                .trim();
+            const lista = document.getElementById("listaClientes");
+            if (texto.length < 1) {
+                lista.style.display = "none";
+                return;
+            }
+            const { data, error } = await supabaseClient
+                .from("clientes")
+                .select("*")
+                .ilike("nombre", `%${texto}%`)
+                .limit(10);
+            if (error) {
+                console.error(error);
+                return;
+            }
+            lista.innerHTML = "";
+            data.forEach(cliente => {
+                const div = document.createElement("div");
+                div.className = "item-resultado";
+                div.innerText = cliente.nombre;
+                div.onclick = () => seleccionarCliente(cliente);
+                lista.appendChild(div);
+            });
+            lista.style.display = "block";
+        }
+        function seleccionarCliente(cliente) {
+            clienteActual = cliente;
+            document.getElementById("buscarCliente").value = cliente.nombre;
+            document.getElementById("clienteSeleccionado").innerHTML =
+                `<strong>Cliente seleccionado:</strong> ${cliente.nombre}`;
+            document.getElementById("listaClientes").style.display = "none";
+        }
+
+        // =====================================================
+        // BUSCAR PRODUCTOS
+        // =====================================================
+        const inputProducto = document.getElementById("buscarProducto");
+        if (inputProducto) {
+            inputProducto.addEventListener("input", buscarProductos);
+        }
+        async function buscarProductos() {
+            const texto = document
+                .getElementById("buscarProducto")
+                .value
+                .trim();
+            const lista = document.getElementById("listaProductos");
+            if (texto.length < 1) {
+                lista.style.display = "none";
+                return;
+            }
+            // id_producto es el codigo de barras del producto (la columna codigo_barra
+            // ya no existe, ahora id_producto cumple ese rol). Se busca por descripcion
+            // o directamente por ese codigo/id.
+            const { data, error } = await supabaseClient
+                .from("productos")
+                .select("*")
+                .or(
+                    `descripcion.ilike.%${texto}%,id_producto.ilike.%${texto}%`
+                )
+                .limit(15);
+            if (error) {
+                console.error(error);
+                return;
+            }
+            lista.innerHTML = "";
+            data.forEach(producto => {
+                const div = document.createElement("div");
+                div.className = "item-resultado";
+                div.innerText =
+                    `${producto.descripcion} - ${producto.talla} - ${producto.color}`;
+                div.onclick = () => seleccionarProducto(producto);
+                lista.appendChild(div);
+            });
+            lista.style.display = "block";
+        }
+
+        // =====================================================
+        // SELECCION PRODUCTO
+        // =====================================================
+        async function seleccionarProducto(producto) {
+            const { data, error } = await supabaseClient.rpc(
+                "buscar_producto_por_codigo",
+                {
+                    codigo: producto.id_producto
+                }
+            );
+            if (error || !data || data.length === 0) {
+                console.error(error);
+                return;
+            }
+            productoActual = data[0];
+            document.getElementById("nombreProducto").innerText =
+                productoActual.descripcion;
+            document.getElementById("tallaProducto").innerText =
+                productoActual.talla || "-";
+            document.getElementById("colorProducto").innerText =
+                productoActual.color || "-";
+            document.getElementById("stockProducto").innerText =
+                productoActual.stock;
+            mostrarPrecioProducto(productoActual);
+            document
+                .getElementById("infoProducto")
+                .classList.remove("oculto");
+            document.getElementById("listaProductos").style.display = "none";
+        }
+
+        function mostrarPrecioProducto(producto) {
+            const tipoVenta = obtenerTipoVenta();
+            const precioMayoristaEl = document.getElementById("precioMayoristaProducto");
+            const precioPublicoEl = document.getElementById("precioPublicoProducto");
+            precioMayoristaEl.innerText =
+                "$" + Number(producto.precio_mayorista).toLocaleString("es-CL");
+            precioPublicoEl.innerText =
+                "$" + Number(producto.precio_publico).toLocaleString("es-CL");
+            precioMayoristaEl.parentElement.classList.toggle(
+                "precio-activo",
+                tipoVenta === "mayorista"
+            );
+            precioPublicoEl.parentElement.classList.toggle(
+                "precio-activo",
+                tipoVenta === "publico"
+            );
+        }
+
+        // =====================================================
+        // AGREGAR AL PEDIDO
+        // =====================================================
+        function agregarProductoPedido() {
+            if (!productoActual) return;
+            const tipoVenta = obtenerTipoVenta();
+            if (!tipoVenta) {
+                alert(
+                    "Selecciona el tipo de venta (mayorista o público general) antes de agregar productos."
+                );
+                return;
+            }
+            const cantidad = parseInt(
+                document.getElementById("cantidadProducto").value
+            );
+            const stock = Number(productoActual.stock);
+            const cantidadStock = Math.min(cantidad, stock);
+            const cantidadPedir = Math.max(cantidad - stock, 0);
+            const precioUnitario = precioSegunTipoVenta(productoActual, tipoVenta);
+            pedidoActual.push({
+                producto: productoActual,
+                cantidad: cantidad,
+                stock: cantidadStock,
+                pedir: cantidadPedir,
+                precioUnitario: precioUnitario
+            });
+            productoActual = null;
+            document.getElementById("buscarProducto").value = "";
+            document.getElementById("cantidadProducto").value = 1;
+            document
+                .getElementById("infoProducto")
+                .classList.add("oculto");
+            actualizarPedido();
+        }
+
+        // =====================================================
+        // ACTUALIZAR CARRITO
+        // =====================================================
+        function actualizarPedido() {
+            const tbody = document.querySelector(
+                "#tablaPedido tbody"
+            );
+            tbody.innerHTML = "";
+            let total = 0;
+            pedidoActual.forEach((item, index) => {
+                const subtotal = item.precioUnitario * item.cantidad;
+                total += subtotal;
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>
+                        ${item.producto.descripcion}
+                        <br>
+                        <small>
+                            ${item.producto.talla || ""}
+                            ${item.producto.color || ""}
+                        </small>
+                    </td>
+                    <td>${item.cantidad}</td>
+                    <td>${item.stock}</td>
+                    <td>${item.pedir}</td>
+                    <td>
+                        $${subtotal.toLocaleString("es-CL")}
+                    </td>
+                    <td>
+                        <button onclick="eliminarProducto(${index})">
+                            X
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+            document.getElementById("totalPedido").innerText =
+                "$" + total.toLocaleString("es-CL");
+        }
+        function eliminarProducto(index) {
+            pedidoActual.splice(index, 1);
+            actualizarPedido();
+        }
+
+        // =====================================================
+        // CONFIRMAR (separa automáticamente venta + pedido)
+        // =====================================================
+        // Lo que ya está físico en tienda se vende y se cobra ahora mismo
+        // (tabla ventas/detalle_venta, descuenta stock de inmediato). Lo que
+        // no está se registra como pedido pendiente al proveedor (tabla
+        // pedidos_clientes/detalle_pedido_cliente, se paga cuando llegue).
+        // Un mismo carrito puede generar una, la otra, o ambas cosas.
+        async function guardarPedido() {
+            if (!clienteActual) {
+                alert("Debe seleccionar un cliente.");
+                return;
+            }
+            const tipoVenta = obtenerTipoVenta();
+            if (!tipoVenta) {
+                alert("Debe seleccionar el tipo de venta (mayorista o público general).");
+                return;
+            }
+            if (pedidoActual.length === 0) {
+                alert("Debe agregar productos.");
+                return;
+            }
+
+            const itemsVenta = pedidoActual.filter(item => item.stock > 0);
+            const itemsPedido = pedidoActual.filter(item => item.pedir > 0);
+
+            const botonGuardar = document.getElementById("botonGuardarPedido");
+            botonGuardar.disabled = true;
+            botonGuardar.innerText = "Guardando...";
+
+            try {
+                let totalVenta = 0;
+                let totalPedido = 0;
+
+                // -------- VENTA (lo que hay físico, se cobra ahora) --------
+                if (itemsVenta.length > 0) {
+                    totalVenta = itemsVenta.reduce(
+                        (suma, item) => suma + item.precioUnitario * item.stock,
+                        0
+                    );
+
+                    const { data: ventaCreada, error: errorVenta } = await supabaseClient
+                        .from("ventas")
+                        .insert({
+                            id_cliente: clienteActual.id_cliente,
+                            fecha: new Date().toISOString(),
+                            total: totalVenta,
+                            estado: "pagada"
+                        })
+                        .select()
+                        .single();
+
+                    if (errorVenta) {
+                        console.error(errorVenta);
+                        alert("Ocurrió un error al registrar la venta. Revisa la consola (F12).");
+                        return;
+                    }
+
+                    const idVenta = ventaCreada.id_venta;
+
+                    const detallesVenta = itemsVenta.map(item => ({
+                        id_venta: idVenta,
+                        id_producto: item.producto.id_producto,
+                        cantidad: item.stock,
+                        precio: item.precioUnitario
+                    }));
+
+                    const { error: errorDetalleVenta } = await supabaseClient
+                        .from("detalle_venta")
+                        .insert(detallesVenta);
+
+                    if (errorDetalleVenta) {
+                        console.error(errorDetalleVenta);
+                        alert(
+                            "La venta se creó pero hubo un error al guardar su detalle. Revisa la consola (F12)."
+                        );
+                        return;
+                    }
+
+                    // Se descuenta el inventario de inmediato: la clienta se
+                    // lleva estos productos en el momento.
+                    const movimientos = itemsVenta.map(item => ({
+                        id_producto: item.producto.id_producto,
+                        fecha: new Date().toISOString(),
+                        tipo_movimiento: "venta",
+                        cantidad: item.stock,
+                        signo: "-",
+                        observacion: `Venta ${idVenta}`
+                    }));
+
+                    const { error: errorMovimiento } = await supabaseClient
+                        .from("movimientos_inventario")
+                        .insert(movimientos);
+
+                    if (errorMovimiento) {
+                        console.error(errorMovimiento);
+                        alert(
+                            "La venta se guardó pero hubo un error al descontar el stock. Revisa la consola (F12)."
+                        );
+                        return;
+                    }
+                }
+
+                // -------- PEDIDO (lo que falta, se paga cuando llegue) --------
+                if (itemsPedido.length > 0) {
+                    totalPedido = itemsPedido.reduce(
+                        (suma, item) => suma + item.precioUnitario * item.pedir,
+                        0
+                    );
+
+                    const { data: pedidoCreado, error: errorPedido } = await supabaseClient
+                        .from("pedidos_clientes")
+                        .insert({
+                            id_cliente: clienteActual.id_cliente,
+                            fecha: new Date().toISOString(),
+                            estado: "pendiente"
+                        })
+                        .select()
+                        .single();
+
+                    if (errorPedido) {
+                        console.error(errorPedido);
+                        alert("Ocurrió un error al registrar el pedido. Revisa la consola (F12).");
+                        return;
+                    }
+
+                    const idPedido = pedidoCreado.id_pedido;
+
+                    const detallesPedido = itemsPedido.map(item => ({
+                        id_pedido: idPedido,
+                        id_producto: item.producto.id_producto,
+                        cantidad: item.pedir,
+                        precio: item.precioUnitario,
+                        estado: "pendiente"
+                    }));
+
+                    const { error: errorDetallePedido } = await supabaseClient
+                        .from("detalle_pedido_cliente")
+                        .insert(detallesPedido);
+
+                    if (errorDetallePedido) {
+                        console.error(errorDetallePedido);
+                        alert(
+                            "El pedido se creó pero hubo un error al guardar su detalle. Revisa la consola (F12)."
+                        );
+                        return;
+                    }
+                }
+
+                // -------- RESUMEN --------
+                let mensaje = "";
+                if (totalVenta > 0) {
+                    mensaje += `Venta registrada: $${totalVenta.toLocaleString("es-CL")}.\n`;
+                }
+                if (totalPedido > 0) {
+                    mensaje += `Pedido registrado (pendiente del proveedor): $${totalPedido.toLocaleString("es-CL")}.`;
+                }
+                alert(mensaje.trim());
+                reiniciarFormularioPedido();
+            } finally {
+                botonGuardar.disabled = false;
+                botonGuardar.innerText = "Finalizar Compra";
+            }
+        }
+
+        function reiniciarFormularioPedido() {
+            clienteActual = null;
+            productoActual = null;
+            pedidoActual = [];
+            document.getElementById("buscarCliente").value = "";
+            document.getElementById("clienteSeleccionado").innerHTML = "";
+            document.getElementById("buscarProducto").value = "";
+            document
+                .getElementById("infoProducto")
+                .classList.add("oculto");
+            document.querySelectorAll('input[name="tipoVenta"]').forEach(radio => {
+                radio.checked = false;
+            });
+            actualizarPedido();
+        }
+
+        // =====================================================
+        // REVISAR STOCK DISPONIBLE
+        // =====================================================
+        let productosConStock = [];
+
+        async function cargarStock() {
+            const { data: productos, error } = await supabaseClient
+                .from("productos")
+                .select("*")
+                .limit(2500);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            // Calcular stock para cada producto
+            productosConStock = [];
+            for (const producto of productos) {
+                const { data: movimientos } = await supabaseClient
+                    .from("movimientos_inventario")
+                    .select("cantidad, signo")
+                    .eq("id_producto", producto.id_producto);
+
+                let stock = 0;
+                if (movimientos) {
+                    stock = movimientos.reduce((suma, m) => {
+                        let signoNum = 0;
+                        if (m.signo === '+' || m.signo === '1') signoNum = 1;
+                        else if (m.signo === '-' || m.signo === '-1') signoNum = -1;
+                        return suma + (m.cantidad * signoNum);
+                    }, 0);
+                }
+
+                productosConStock.push({
+                    ...producto,
+                    stock: stock
+                });
+            }
+
+            mostrarTablaStock(productosConStock);
+        }
+
+        function mostrarTablaStock(productos) {
+            const tbody = document.getElementById("cuerpoTablaStock");
+            tbody.innerHTML = "";
+
+            productos.forEach(producto => {
+                const fila = document.createElement("tr");
+                const stockClass = producto.stock < 0 ? 'style="color: red; font-weight: bold;"' : '';
+                fila.innerHTML = `
+                    <td>${producto.id_producto}</td>
+                    <td>${producto.descripcion}</td>
+                    <td>${producto.referencia || "-"}</td>
+                    <td>${producto.talla || "-"}</td>
+                    <td>${producto.color || "-"}</td>
+                    <td ${stockClass}>${producto.stock}</td>
+                    <td>$${Number(producto.precio_base).toLocaleString("es-CL")}</td>
+                    <td>$${Number(producto.precio_mayorista).toLocaleString("es-CL")}</td>
+                    <td>$${Number(producto.precio_publico).toLocaleString("es-CL")}</td>
+                `;
+                tbody.appendChild(fila);
+            });
+        }
+
+        // Filtrar stock por múltiples criterios
+        const inputCodigoBarras = document.getElementById("filtroCodigoBarras");
+        const inputDescripcion = document.getElementById("filtroDescripcion");
+        const inputReferencia = document.getElementById("filtroReferencia");
+
+        if (inputCodigoBarras) inputCodigoBarras.addEventListener("input", filtrarStock);
+        if (inputDescripcion) inputDescripcion.addEventListener("input", filtrarStock);
+        if (inputReferencia) inputReferencia.addEventListener("input", filtrarStock);
+
+        function filtrarStock() {
+            const codigoBarras = document.getElementById("filtroCodigoBarras").value.trim();
+            const descripcion = document.getElementById("filtroDescripcion").value.toLowerCase().trim();
+            const referencia = document.getElementById("filtroReferencia").value.toLowerCase().trim();
+
+            const filtrados = productosConStock.filter(p => {
+                // Filtro de Código de Barras (comienza con)
+                if (codigoBarras && !p.id_producto.startsWith(codigoBarras)) {
+                    return false;
+                }
+
+                // Filtro de Descripción (contiene)
+                if (descripcion && !p.descripcion.toLowerCase().includes(descripcion)) {
+                    return false;
+                }
+
+                // Filtro de Referencia (comienza con)
+                if (referencia) {
+                    const ref = (p.referencia || "").toLowerCase();
+                    if (!ref.startsWith(referencia)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            mostrarTablaStock(filtrados);
+        }
+
+        // Cargar stock cuando se abre la sección
+        document.addEventListener("click", (e) => {
+            if (e.target && e.target.textContent.includes("Revisar Stock")) {
+                if (productosConStock.length === 0) {
+                    cargarStock();
+                }
+            }
+        });
+
+        // =====================================================
+        // GENERAR INVENTARIO
+        // =====================================================
+        let auditoriaActual = null;
+        let productosInventario = [];
+
+        const inputProductoInventario = document.getElementById("buscarProductoInventario");
+        if (inputProductoInventario) {
+            inputProductoInventario.addEventListener("input", buscarProductosInventario);
+            inputProductoInventario.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        async function buscarProductosInventario() {
+            const texto = document.getElementById("buscarProductoInventario").value.trim();
+            const lista = document.getElementById("listaProductosInventario");
+
+            if (texto.length < 1) {
+                lista.style.display = "none";
+                return;
+            }
+
+            const { data, error } = await supabaseClient
+                .from("productos")
+                .select("*")
+                .or(`descripcion.ilike.%${texto}%,id_producto.ilike.%${texto}%`)
+                .limit(15);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            lista.innerHTML = "";
+            data.forEach(producto => {
+                const div = document.createElement("div");
+                div.className = "item-resultado";
+                div.innerText = `${producto.descripcion} - ${producto.talla || ""} ${producto.color || ""}`;
+                div.onclick = () => agregarProductoInventario(producto);
+                lista.appendChild(div);
+            });
+            lista.style.display = "block";
+        }
+
+        function agregarProductoInventario(producto) {
+            // Buscar si ya existe
+            const existe = productosInventario.find(p => p.id_producto === producto.id_producto);
+
+            if (existe) {
+                existe.cantidad += 1;
+            } else {
+                productosInventario.push({
+                    ...producto,
+                    cantidad: 1
+                });
+            }
+
+            document.getElementById("buscarProductoInventario").value = "";
+            document.getElementById("listaProductosInventario").style.display = "none";
+            actualizarTablaInventario();
+        }
+
+        function actualizarTablaInventario() {
+            const tbody = document.getElementById("cuerpoTablaInventario");
+            tbody.innerHTML = "";
+
+            productosInventario.forEach((item, index) => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>
+                        ${item.descripcion}
+                        <br>
+                        <small>${item.talla || ""} ${item.color || ""}</small>
+                    </td>
+                    <td>
+                        <input type="number" value="${item.cantidad}" min="1" onchange="cambiarCantidadInventario(${index}, this.value)" style="width: 80px; padding: 6px;">
+                    </td>
+                    <td>
+                        <button onclick="eliminarProductoInventario(${index})" style="background: #e8dfe8; color: #6b4c5c; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+                            Eliminar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+        }
+
+        function cambiarCantidadInventario(index, valor) {
+            productosInventario[index].cantidad = parseInt(valor) || 1;
+            actualizarTablaInventario();
+        }
+
+        function eliminarProductoInventario(index) {
+            productosInventario.splice(index, 1);
+            actualizarTablaInventario();
+        }
+
+        async function guardarAuditoria() {
+            if (productosInventario.length === 0) {
+                alert("Debe agregar al menos un producto.");
+                return;
+            }
+
+            const mesAño = new Date().toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+
+            const { data: auditoria, error: errorAuditoria } = await supabaseClient
+                .from("auditorias")
+                .insert({
+                    mes_año: mesAño,
+                    estado: "en_progreso"
+                })
+                .select()
+                .single();
+
+            if (errorAuditoria) {
+                console.error(errorAuditoria);
+                alert("Error al guardar auditoría.");
+                return;
+            }
+
+            const detalles = productosInventario.map(p => ({
+                id_auditoria: auditoria.id_auditoria,
+                id_producto: p.id_producto,
+                cantidad_fisica: p.cantidad
+            }));
+
+            const { error: errorDetalle } = await supabaseClient
+                .from("detalle_auditoria")
+                .insert(detalles);
+
+            if (errorDetalle) {
+                console.error(errorDetalle);
+                alert("Error al guardar detalles de auditoría.");
+                return;
+            }
+
+            auditoriaActual = auditoria.id_auditoria;
+            alert(`Auditoría guardada. ID: ${auditoria.id_auditoria}`);
+            productosInventario = [];
+            actualizarTablaInventario();
+        }
+
+        async function retomarAuditoria() {
+            const { data: auditorias, error } = await supabaseClient
+                .from("auditorias")
+                .select("*")
+                .eq("estado", "en_progreso")
+                .order("creada_en", { ascending: false });
+
+            if (error) {
+                console.error(error);
+                alert("Error al cargar auditorías.");
+                return;
+            }
+
+            if (auditorias.length === 0) {
+                alert("No hay auditorías en progreso para retomar.");
+                return;
+            }
+
+            const auditoriaId = prompt(
+                "Auditorías en progreso:\n" +
+                auditorias.map((a, i) => `${i + 1}. ${a.mes_año} (${new Date(a.creada_en).toLocaleDateString("es-CL")})`).join("\n") +
+                "\n\nCopia el mes_año y pégalo aquí (o el número):"
+            );
+
+            if (!auditoriaId) return;
+
+            const auditoria = auditorias.find(a => a.mes_año === auditoriaId) || auditorias[parseInt(auditoriaId) - 1];
+
+            if (!auditoria) {
+                alert("Auditoría no encontrada.");
+                return;
+            }
+
+            const { data: detalles } = await supabaseClient
+                .from("detalle_auditoria")
+                .select("*")
+                .eq("id_auditoria", auditoria.id_auditoria);
+
+            productosInventario = [];
+            for (const detalle of detalles) {
+                const { data: producto } = await supabaseClient
+                    .from("productos")
+                    .select("*")
+                    .eq("id_producto", detalle.id_producto)
+                    .single();
+
+                if (producto) {
+                    productosInventario.push({
+                        ...producto,
+                        cantidad: detalle.cantidad_fisica
+                    });
+                }
+            }
+
+            auditoriaActual = auditoria.id_auditoria;
+            actualizarTablaInventario();
+            alert(`Auditoría "${auditoria.mes_año}" cargada. Continúa contando.`);
+        }
+
+        async function finalizarAuditoria() {
+            if (!auditoriaActual) {
+                alert("No hay auditoría en progreso.");
+                return;
+            }
+
+            const { error } = await supabaseClient
+                .from("auditorias")
+                .update({ estado: "finalizada" })
+                .eq("id_auditoria", auditoriaActual);
+
+            if (error) {
+                console.error(error);
+                alert("Error al finalizar auditoría.");
+                return;
+            }
+
+            alert("Auditoría finalizada.");
+            auditoriaActual = null;
+            productosInventario = [];
+            actualizarTablaInventario();
+        }
+
+        // =====================================================
+        // AUDITORIA INVENTARIO
+        // =====================================================
+        let auditoriaSeleccionada = null;
+
+        async function cargarListaAuditorias() {
+            const { data, error } = await supabaseClient
+                .from("auditorias")
+                .select("*")
+                .order("creada_en", { ascending: false });
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            const select = document.getElementById("selectAuditoria");
+            select.innerHTML = '<option value="">-- Seleccionar auditoría --</option>';
+
+            data.forEach(auditoria => {
+                const option = document.createElement("option");
+                option.value = auditoria.id_auditoria;
+                const estado = auditoria.estado === "finalizada" ? "✓ Finalizada" : "⏳ En progreso";
+                option.innerText = `${auditoria.mes_año} - ${estado} (${new Date(auditoria.creada_en).toLocaleDateString("es-CL")})`;
+                select.appendChild(option);
+            });
+        }
+
+        async function cargarAuditoria() {
+            const id = document.getElementById("selectAuditoria").value;
+            if (!id) return;
+
+            auditoriaSeleccionada = id;
+
+            const { data: detalles, error: errorDetalles } = await supabaseClient
+                .from("detalle_auditoria")
+                .select("*")
+                .eq("id_auditoria", id);
+
+            if (errorDetalles) {
+                console.error(errorDetalles);
+                return;
+            }
+
+            const { data: auditoria } = await supabaseClient
+                .from("auditorias")
+                .select("*")
+                .eq("id_auditoria", id)
+                .single();
+
+            document.getElementById("fechaAuditoria").innerText = auditoria.mes_año;
+
+            const tbody = document.getElementById("cuerpoTablaAuditoria");
+            tbody.innerHTML = "";
+
+            for (const detalle of detalles) {
+                const { data: producto } = await supabaseClient
+                    .from("productos")
+                    .select("*")
+                    .eq("id_producto", detalle.id_producto)
+                    .single();
+
+                const { data: movimientos } = await supabaseClient
+                    .from("movimientos_inventario")
+                    .select("cantidad, signo")
+                    .eq("id_producto", detalle.id_producto);
+
+                let stockSistema = 0;
+                if (movimientos) {
+                    stockSistema = movimientos.reduce((suma, m) => {
+                        let signoNum = 0;
+                        if (m.signo === '+' || m.signo === '1') signoNum = 1;
+                        else if (m.signo === '-' || m.signo === '-1') signoNum = -1;
+                        return suma + (m.cantidad * signoNum);
+                    }, 0);
+                }
+
+                const diferencia = stockSistema - detalle.cantidad_fisica;
+                const colorDiferencia = diferencia > 0 ? 'color: #8b3a3a;' : 'color: #3a6b4a;';
+
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${detalle.id_producto}</td>
+                    <td>${producto?.referencia || "-"}</td>
+                    <td>${producto?.descripcion || ""}</td>
+                    <td>${stockSistema}</td>
+                    <td>${detalle.cantidad_fisica}</td>
+                    <td style="${colorDiferencia}"><strong>${diferencia > 0 ? '+' : ''}${diferencia}</strong></td>
+                `;
+                tbody.appendChild(fila);
+            }
+
+            document.getElementById("resultadosAuditoria").classList.remove("oculto");
+        }
+
+        async function descargarExcelAuditoria() {
+            try {
+                console.log("Iniciando descarga de Excel...");
+                console.log("¿XLSX disponible?", typeof XLSX);
+
+                if (!auditoriaSeleccionada) {
+                    alert("Selecciona una auditoría primero.");
+                    return;
+                }
+
+                if (typeof XLSX === 'undefined') {
+                    alert("Error: Librería XLSX no cargada. Por favor, recarga la página.");
+                    console.error("XLSX no está disponible");
+                    return;
+                }
+
+                console.log("Trayendo datos de auditoría...");
+                const { data: auditoria } = await supabaseClient
+                    .from("auditorias")
+                    .select("*")
+                    .eq("id_auditoria", auditoriaSeleccionada)
+                    .single();
+
+                console.log("Auditoría:", auditoria);
+
+                const { data: detalles } = await supabaseClient
+                    .from("detalle_auditoria")
+                    .select("*")
+                    .eq("id_auditoria", auditoriaSeleccionada);
+
+                console.log("Detalles traídos:", detalles?.length || 0, "registros");
+
+                const filas = [];
+
+                for (const detalle of detalles) {
+                    const { data: producto } = await supabaseClient
+                        .from("productos")
+                        .select("*")
+                        .eq("id_producto", detalle.id_producto)
+                        .single();
+
+                    const { data: movimientos } = await supabaseClient
+                        .from("movimientos_inventario")
+                        .select("cantidad, signo")
+                        .eq("id_producto", detalle.id_producto);
+
+                    let stockSistema = 0;
+                    if (movimientos) {
+                        stockSistema = movimientos.reduce((suma, m) => {
+                            let signoNum = 0;
+                            if (m.signo === '+' || m.signo === '1') signoNum = 1;
+                            else if (m.signo === '-' || m.signo === '-1') signoNum = -1;
+                            return suma + (m.cantidad * signoNum);
+                        }, 0);
+                    }
+
+                    const diferencia = stockSistema - detalle.cantidad_fisica;
+
+                    filas.push({
+                        "Código": detalle.id_producto,
+                        "Referencia": producto?.referencia || "-",
+                        "Descripción": producto?.descripcion || "",
+                        "Talla": producto?.talla || "-",
+                        "Color": producto?.color || "-",
+                        "Stock Sistema": stockSistema,
+                        "Stock Físico": detalle.cantidad_fisica,
+                        "Diferencia": diferencia,
+                        "Estado": diferencia > 0 ? "Falta" : diferencia < 0 ? "Sobra" : "OK"
+                    });
+                }
+
+                console.log("Filas procesadas:", filas.length);
+                console.log("Creando worksheet...");
+
+                const ws = XLSX.utils.json_to_sheet(filas);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Auditoría");
+
+                const nombreArchivo = `Auditoria_${auditoria.mes_año.replace(" ", "_")}_${new Date().toISOString().split("T")[0]}.xlsx`;
+                console.log("Descargando archivo:", nombreArchivo);
+
+                XLSX.writeFile(wb, nombreArchivo);
+                console.log("Descarga completada!");
+            } catch (error) {
+                console.error("Error en descargarExcelAuditoria:", error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        async function descargarCSVAuditoria() {
+            try {
+                console.log("Iniciando descarga de CSV...");
+
+                if (!auditoriaSeleccionada) {
+                    alert("Selecciona una auditoría primero.");
+                    return;
+                }
+
+                console.log("Trayendo datos de auditoría...");
+                const { data: auditoria } = await supabaseClient
+                    .from("auditorias")
+                    .select("*")
+                    .eq("id_auditoria", auditoriaSeleccionada)
+                    .single();
+
+                const { data: detalles } = await supabaseClient
+                    .from("detalle_auditoria")
+                    .select("*")
+                    .eq("id_auditoria", auditoriaSeleccionada);
+
+                console.log("Detalles traídos:", detalles?.length || 0, "registros");
+
+                const filas = [];
+
+                for (const detalle of detalles) {
+                    const { data: producto } = await supabaseClient
+                        .from("productos")
+                        .select("*")
+                        .eq("id_producto", detalle.id_producto)
+                        .single();
+
+                    const { data: movimientos } = await supabaseClient
+                        .from("movimientos_inventario")
+                        .select("cantidad, signo")
+                        .eq("id_producto", detalle.id_producto);
+
+                    let stockSistema = 0;
+                    if (movimientos) {
+                        stockSistema = movimientos.reduce((suma, m) => {
+                            let signoNum = 0;
+                            if (m.signo === '+' || m.signo === '1') signoNum = 1;
+                            else if (m.signo === '-' || m.signo === '-1') signoNum = -1;
+                            return suma + (m.cantidad * signoNum);
+                        }, 0);
+                    }
+
+                    const diferencia = stockSistema - detalle.cantidad_fisica;
+
+                    filas.push({
+                        "Código": detalle.id_producto,
+                        "Referencia": producto?.referencia || "-",
+                        "Descripción": producto?.descripcion || "",
+                        "Talla": producto?.talla || "-",
+                        "Color": producto?.color || "-",
+                        "Stock Sistema": stockSistema,
+                        "Stock Físico": detalle.cantidad_fisica,
+                        "Diferencia": diferencia,
+                        "Estado": diferencia > 0 ? "Falta" : diferencia < 0 ? "Sobra" : "OK"
+                    });
+                }
+
+                console.log("Filas procesadas:", filas.length);
+
+                // Crear CSV manualmente
+                const headers = Object.keys(filas[0]);
+                const csvContent = [
+                    headers.join(","),
+                    ...filas.map(fila =>
+                        headers.map(header => {
+                            const valor = fila[header];
+                            // Escapar comillas en valores que las contengan
+                            if (typeof valor === 'string' && valor.includes('"')) {
+                                return `"${valor.replace(/"/g, '""')}"`;
+                            }
+                            return valor;
+                        }).join(",")
+                    )
+                ].join("\n");
+
+                const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                const nombreArchivo = `Auditoria_${auditoria.mes_año.replace(" ", "_")}_${new Date().toISOString().split("T")[0]}.csv`;
+
+                link.setAttribute("href", url);
+                link.setAttribute("download", nombreArchivo);
+                link.style.visibility = "hidden";
+
+                document.body.appendChild(link);
+                console.log("Descargando archivo:", nombreArchivo);
+                link.click();
+                document.body.removeChild(link);
+
+                console.log("Descarga CSV completada!");
+            } catch (error) {
+                console.error("Error en descargarCSVAuditoria:", error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        async function descargarPdfAuditoria() {
+            try {
+                console.log("Iniciando descarga de PDF...");
+                console.log("¿jsPDF disponible?", typeof jspdf);
+
+                if (!auditoriaSeleccionada) {
+                    alert("Selecciona una auditoría primero.");
+                    return;
+                }
+
+                if (typeof jspdf === 'undefined' || !jspdf.jsPDF) {
+                    alert("Error: Librería jsPDF no cargada. Por favor, recarga la página.");
+                    console.error("jsPDF no está disponible");
+                    return;
+                }
+
+                console.log("Trayendo datos de auditoría...");
+                const { data: auditoria } = await supabaseClient
+                    .from("auditorias")
+                    .select("*")
+                    .eq("id_auditoria", auditoriaSeleccionada)
+                    .single();
+
+                console.log("Auditoría:", auditoria);
+
+                const { data: detalles } = await supabaseClient
+                    .from("detalle_auditoria")
+                    .select("*")
+                    .eq("id_auditoria", auditoriaSeleccionada);
+
+                console.log("Detalles traídos:", detalles?.length || 0, "registros");
+
+                const filas = [];
+                let totalFalta = 0, totalSobra = 0, totalOK = 0;
+
+                for (const detalle of detalles) {
+                    const { data: producto } = await supabaseClient
+                        .from("productos")
+                        .select("*")
+                        .eq("id_producto", detalle.id_producto)
+                        .single();
+
+                    const { data: movimientos } = await supabaseClient
+                        .from("movimientos_inventario")
+                        .select("cantidad, signo")
+                        .eq("id_producto", detalle.id_producto);
+
+                    let stockSistema = 0;
+                    if (movimientos) {
+                        stockSistema = movimientos.reduce((suma, m) => {
+                            let signoNum = 0;
+                            if (m.signo === '+' || m.signo === '1') signoNum = 1;
+                            else if (m.signo === '-' || m.signo === '-1') signoNum = -1;
+                            return suma + (m.cantidad * signoNum);
+                        }, 0);
+                    }
+
+                    const diferencia = stockSistema - detalle.cantidad_fisica;
+                    const estado = diferencia > 0 ? "Falta" : diferencia < 0 ? "Sobra" : "OK";
+
+                    if (estado === "Falta") totalFalta++;
+                    else if (estado === "Sobra") totalSobra++;
+                    else totalOK++;
+
+                    filas.push({
+                        codigo: detalle.id_producto,
+                        referencia: producto?.referencia || "-",
+                        descripcion: producto?.descripcion || "",
+                        talla: producto?.talla || "-",
+                        color: producto?.color || "-",
+                        stockSistema: stockSistema,
+                        stockFisico: detalle.cantidad_fisica,
+                        diferencia: diferencia,
+                        estado: estado
+                    });
+                }
+
+                console.log("Filas procesadas:", filas.length);
+                console.log("Creando PDF...");
+
+                // Crear documento PDF
+                const { jsPDF } = jspdf;
+                const pdf = new jsPDF('l', 'mm', 'a4'); // Landscape
+
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 15;
+                let yPosition = margin;
+
+                // Colores de SASHA
+                const colorPrimario = [107, 76, 92];      // #6b4c5c
+                const colorSecundario = [122, 107, 117]; // #7a6b75
+                const colorFondo = [245, 244, 247];      // #f5f4f7
+                const colorTexto = [42, 42, 42];         // #2a2a2a
+
+                // Encabezado
+                pdf.setFillColor(...colorPrimario);
+                pdf.rect(margin - 5, yPosition - 5, pageWidth - 2*margin + 10, 25, 'F');
+
+                pdf.setTextColor(255, 255, 255);
+                pdf.setFontSize(24);
+                pdf.setFont(undefined, 'bold');
+                pdf.text('SASHA', margin, yPosition + 12);
+
+                pdf.setFontSize(10);
+                pdf.setFont(undefined, 'normal');
+                pdf.text('Auditoría de Inventario', margin, yPosition + 18);
+
+                pdf.setTextColor(...colorTexto);
+                pdf.setFontSize(9);
+                const fechaActual = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                pdf.text(`Generado: ${fechaActual}`, pageWidth - margin - 50, yPosition + 12);
+                pdf.text(`Período: ${auditoria.mes_año}`, pageWidth - margin - 50, yPosition + 18);
+
+                yPosition += 35;
+
+                // Información de auditoría
+                pdf.setFontSize(10);
+                pdf.setFont(undefined, 'bold');
+                pdf.setTextColor(...colorPrimario);
+                pdf.text('INFORMACIÓN DE AUDITORÍA', margin, yPosition);
+
+                yPosition += 8;
+                pdf.setFont(undefined, 'normal');
+                pdf.setFontSize(9);
+                pdf.setTextColor(...colorTexto);
+                pdf.text(`Período: ${auditoria.mes_año}`, margin, yPosition);
+                pdf.text(`Estado: ${auditoria.estado}`, margin + 80, yPosition);
+
+                yPosition += 10;
+
+                // Tabla
+                const columnas = ['Código', 'Ref.', 'Descripción', 'Talla', 'Color', 'Stock Sistema', 'Stock Físico', 'Diferencia', 'Estado'];
+                const anchos = [18, 15, 50, 12, 12, 18, 16, 15, 15];
+
+                // Encabezado de tabla
+                pdf.setFillColor(...colorPrimario);
+                pdf.setTextColor(255, 255, 255);
+                pdf.setFont(undefined, 'bold');
+                pdf.setFontSize(8);
+
+                let xPos = margin;
+                for (let i = 0; i < columnas.length; i++) {
+                    pdf.rect(xPos, yPosition, anchos[i], 7, 'F');
+                    pdf.text(columnas[i], xPos + 1, yPosition + 5);
+                    xPos += anchos[i];
+                }
+
+                yPosition += 7;
+
+                // Filas de tabla
+                pdf.setFont(undefined, 'normal');
+                pdf.setFontSize(7);
+
+                filas.forEach((fila, index) => {
+                    // Alternar color de fondo
+                    if (index % 2 === 0) {
+                        pdf.setFillColor(...colorFondo);
+                        xPos = margin;
+                        for (let i = 0; i < columnas.length; i++) {
+                            pdf.rect(xPos, yPosition, anchos[i], 5, 'F');
+                            xPos += anchos[i];
+                        }
+                    }
+
+                    pdf.setTextColor(...colorTexto);
+                    xPos = margin + 1;
+
+                    // Datos de la fila
+                    const datos = [
+                        fila.codigo,
+                        fila.referencia,
+                        fila.descripcion.substring(0, 25),
+                        fila.talla,
+                        fila.color,
+                        fila.stockSistema.toString(),
+                        fila.stockFisico.toString(),
+                        fila.diferencia.toString(),
+                        fila.estado
+                    ];
+
+                    datos.forEach((dato, i) => {
+                        pdf.text(dato, xPos, yPosition + 3.5);
+                        xPos += anchos[i];
+                    });
+
+                    yPosition += 5;
+
+                    // Salto de página si es necesario
+                    if (yPosition > pageHeight - 25) {
+                        pdf.addPage();
+                        yPosition = margin;
+                    }
+                });
+
+                yPosition += 5;
+
+                // Resumen
+                pdf.setFontSize(10);
+                pdf.setFont(undefined, 'bold');
+                pdf.setTextColor(...colorPrimario);
+                pdf.text('RESUMEN', margin, yPosition);
+
+                yPosition += 8;
+                pdf.setFont(undefined, 'normal');
+                pdf.setFontSize(9);
+
+                const resumenDatos = [
+                    { label: 'Productos con FALTA:', valor: totalFalta, color: [220, 53, 69] },
+                    { label: 'Productos con SOBRA:', valor: totalSobra, color: [255, 193, 7] },
+                    { label: 'Productos OK:', valor: totalOK, color: [40, 167, 69] }
+                ];
+
+                resumenDatos.forEach((item) => {
+                    pdf.setTextColor(...item.color);
+                    pdf.text(`${item.label} ${item.valor}`, margin, yPosition);
+                    yPosition += 7;
+                });
+
+                // Pie de página
+                pdf.setTextColor(150, 150, 150);
+                pdf.setFontSize(8);
+                pdf.text(
+                    `Página ${pdf.internal.pages.length - 1}`,
+                    pageWidth / 2,
+                    pageHeight - 10,
+                    { align: 'center' }
+                );
+
+                const nombreArchivo = `Auditoria_${auditoria.mes_año.replace(" ", "_")}_${new Date().toISOString().split("T")[0]}.pdf`;
+                console.log("Descargando archivo:", nombreArchivo);
+                pdf.save(nombreArchivo);
+
+                console.log("Descarga PDF completada!");
+            } catch (error) {
+                console.error("Error en descargarPdfAuditoria:", error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        // Cargar auditorías cuando se abre la sección
+        document.addEventListener("click", (e) => {
+            if (e.target && e.target.textContent.includes("Auditoría")) {
+                cargarListaAuditorias();
+            }
+        });
+    </script>
+</body>
+</html>
